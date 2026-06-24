@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Панель администратора — Пассажирам.РФ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="logo-img">
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Меню">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="login.html" class="nav-link">Вход</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="register.html" class="nav-link nav-link-primary">Регистрация</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="dashboard.html" class="nav-link">Личный кабинет</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="request.html" class="nav-link">Подать заявку</a>
+                </li>
+                <li class="nav-item admin-visible" style="display:none">
+                    <a href="admin.html" class="nav-link nav-link-admin">Админ-панель</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="#" class="nav-link" onclick="auth.logout()">Выход</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Уведомления -->
+    <div class="notifications-container" id="notifications"></div>
+
+    <!-- ==================== ПАНЕЛЬ АДМИНИСТРАТОРА ==================== -->
+    <section class="page" id="page-admin">
+        <div class="admin-panel">
+            <div class="admin-header">
+                <h2 class="section-title">Панель управления администратора</h2>
+                <div class="admin-stats" id="adminStats">
+                    <div class="stat-card stat-new">
+                        <span class="stat-number" id="statNew">0</span>
+                        <span class="stat-label">Новые</span>
+                    </div>
+                    <div class="stat-card stat-progress">
+                        <span class="stat-number" id="statProgress">0</span>
+                        <span class="stat-label">В обучении</span>
+                    </div>
+                    <div class="stat-card stat-completed">
+                        <span class="stat-number" id="statCompleted">0</span>
+                        <span class="stat-label">Завершено</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Фильтры -->
+            <div class="admin-filters">
+                <div class="filter-group">
+                    <label for="filterStatus" class="filter-label">Статус:</label>
+                    <select id="filterStatus" class="filter-select" onchange="admin.applyFilters()">
+                        <option value="">Все статусы</option>
+                        <option value="Новая">Новая</option>
+                        <option value="Идет обучение">Идет обучение</option>
+                        <option value="Обучение завершено">Обучение завершено</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterTransport" class="filter-label">Транспорт:</label>
+                    <select id="filterTransport" class="filter-select" onchange="admin.applyFilters()">
+                        <option value="">Все виды</option>
+                        <option value="Автобус">Автобус</option>
+                        <option value="Электробус">Электробус</option>
+                        <option value="Трамвай">Трамвай</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterSearch" class="filter-label">Поиск:</label>
+                    <input type="text" id="filterSearch" class="filter-input" placeholder="По ФИО или логину" oninput="admin.applyFilters()">
+                </div>
+                <div class="filter-group">
+                    <label for="sortBy" class="filter-label">Сортировка:</label>
+                    <select id="sortBy" class="filter-select" onchange="admin.applyFilters()">
+                        <option value="date-desc">По дате (новые)</option>
+                        <option value="date-asc">По дате (старые)</option>
+                        <option value="fio">По ФИО</option>
+                        <option value="status">По статусу</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Таблица заявок -->
+            <div class="table-container">
+                <table class="admin-table" id="adminTable">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Дата</th>
+                            <th>Пользователь</th>
+                            <th>Транспорт</th>
+                            <th>Дата начала</th>
+                            <th>Оплата</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody">
+                    </tbody>
+                </table>
+                <div class="empty-state" id="adminEmpty" style="display:none">
+                    <p>Заявки не найдены</p>
+                </div>
+            </div>
+
+            <!-- Пагинация -->
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="footer-logo">
+                <p class="footer-desc">Курсы обучения водителей пассажирского транспорта</p>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>г. Москва, ул. Большая Ордынка, д. 15</p>
+                <p><a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Мы в соцсетях</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <img src="images/social.png" alt="Социальные сети" class="social-img">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Пассажирам.РФ — Все права защищены</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            storage.init();
+            notify.init();
+            nav.init();
+
+            // Защита страницы — только для администратора
+            if (!auth.isAdmin()) {
+                notify.error('Доступ запрещён');
+                setTimeout(() => window.location.href = 'index.html', 500);
+                return;
+            }
+
+            admin.load();
+        });
+    </script>
+</body>
+</html>

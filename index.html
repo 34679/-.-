@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Пассажирам.РФ — Обучение пассажирским перевозкам</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="logo-img">
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Меню">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="login.html" class="nav-link">Вход</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="register.html" class="nav-link nav-link-primary">Регистрация</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="dashboard.html" class="nav-link">Личный кабинет</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="request.html" class="nav-link">Подать заявку</a>
+                </li>
+                <li class="nav-item admin-visible" style="display:none">
+                    <a href="admin.html" class="nav-link nav-link-admin">Админ-панель</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="#" class="nav-link" onclick="auth.logout()">Выход</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Уведомления -->
+    <div class="notifications-container" id="notifications"></div>
+
+    <!-- ==================== ГЛАВНАЯ СТРАНИЦА ==================== -->
+    <section class="page" id="page-home">
+        <!-- Hero секция -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Курсы обучения водителей пассажирского транспорта</h1>
+                <p class="hero-subtitle">Профессиональная подготовка водителей автобусов, электробусов и трамваев</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-lg" onclick="goToEnrollment()">Записаться на курсы</button>
+                    <button class="btn btn-outline btn-lg" onclick="window.location.href='login.html'">Личный кабинет</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="images/hero.jpg" alt="Пассажирский транспорт">
+            </div>
+        </div>
+
+        <!-- Слайдер -->
+        <div class="slider-section">
+            <h2 class="section-title">Наш транспорт</h2>
+            <div class="slider" id="mainSlider">
+                <div class="slider-container">
+                    <div class="slider-slide active">
+                        <img src="images/slider1.png" alt="Автобус">
+                        <div class="slide-caption">Современный автобус</div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="images/slider2.jpg" alt="Электробус">
+                        <div class="slide-caption">Экологичный электробус</div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="images/slider3.jpg" alt="Трамвай">
+                        <div class="slide-caption">Городской трамвай</div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="images/slider4.jpg" alt="Транспорт Москвы">
+                        <div class="slide-caption">Транспорт Москвы</div>
+                    </div>
+                </div>
+                <button class="slider-btn slider-prev" onclick="mainSlider.prev()">&#10094;</button>
+                <button class="slider-btn slider-next" onclick="mainSlider.next()">&#10095;</button>
+                <div class="slider-dots" id="sliderDots"></div>
+            </div>
+        </div>
+
+        <!-- Виды транспорта -->
+        <div class="transport-section">
+            <h2 class="section-title">Выберите вид транспорта для обучения</h2>
+            <div class="transport-grid">
+                <div class="transport-card">
+                    <div class="transport-img">
+                        <img src="images/bus.jpg" alt="Автобус">
+                    </div>
+                    <h3>Автобус</h3>
+                    <p>Обучение вождению городского автобуса. Теория и практика управления современными автобусами.</p>
+                    <button class="btn btn-primary" onclick="goToEnrollment('Автобус')">Выбрать</button>
+                </div>
+                <div class="transport-card">
+                    <div class="transport-img">
+                        <img src="images/electrobus.png" alt="Электробус">
+                    </div>
+                    <h3>Электробус</h3>
+                    <p>Подготовка водителей электробусов. Особенности управления экологическим транспортом.</p>
+                    <button class="btn btn-primary" onclick="goToEnrollment('Электробус')">Выбрать</button>
+                </div>
+                <div class="transport-card">
+                    <div class="transport-img">
+                        <img src="images/tram.jpg" alt="Трамвай">
+                    </div>
+                    <h3>Трамвай</h3>
+                    <p>Курсы подготовки водителей трамвая. Специфика работы на рельсовом транспорте.</p>
+                    <button class="btn btn-primary" onclick="goToEnrollment('Трамвай')">Выбрать</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Информация -->
+        <div class="info-section">
+            <div class="info-card">
+                <h3>Наше местонахождение</h3>
+                <p><strong>Адрес:</strong> г. Москва, ул. Большая Ордынка, д. 15</p>
+                <p><strong>Телефон горячей линии:</strong> <a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+                <p class="info-note">Если возникли вопросы или пожелания, позвоните нам. Ответим оперативно и подробно.</p>
+            </div>
+            <div class="info-card">
+                <h3>Варианты оплаты</h3>
+                <ul class="payment-list">
+                    <li>Предоплата по QR-коду</li>
+                    <li>Оплата картой МИР</li>
+                    <li>Постоплата в офисе организации</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="footer-logo">
+                <p class="footer-desc">Курсы обучения водителей пассажирского транспорта</p>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>г. Москва, ул. Большая Ордынка, д. 15</p>
+                <p><a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Мы в соцсетях</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <img src="images/social.png" alt="Социальные сети" class="social-img">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Пассажирам.РФ — Все права защищены</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            storage.init();
+            notify.init();
+            nav.init();
+            mainSlider = new Slider('mainSlider', 'sliderDots');
+        });
+
+        function goToEnrollment(transport) {
+            if (auth.getCurrentUser()) {
+                if (transport) {
+                    sessionStorage.setItem('selectedTransport', transport);
+                }
+                window.location.href = 'request.html';
+            } else {
+                window.location.href = 'register.html';
+            }
+        }
+    </script>
+</body>
+</html>
