@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет — Пассажирам.РФ</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="dashboard.html">Личный кабинет</a>
+        <a href="request.html">Подать заявку</a>
+        <a href="#" onclick="auth.logout()">Выход</a>
+    </nav>
+
+    <h2>Личный кабинет</h2>
+    <p>Добро пожаловать, <strong id="userName"></strong>!</p>
+    <p id="userEmail"></p>
+
+    <a href="request.html">+ Подать новую заявку</a>
+
+    <h3>Мои заявки</h3>
+    <div id="userRequests">
+        <p>У вас пока нет заявок</p>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            storage.init();
+            const user = auth.getCurrentUser();
+            if (!user) {
+                alert('Требуется авторизация');
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('userName').textContent = user.fio;
+            document.getElementById('userEmail').textContent = user.email;
+            dashboard.loadRequests();
+        });
+    </script>
+</body>
+</html>

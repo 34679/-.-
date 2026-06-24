@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заявки — Пассажирам.РФ</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="dashboard.html">Личный кабинет</a>
+        <a href="request.html">Подать заявку</a>
+        <a href="#" onclick="auth.logout()">Выход</a>
+    </nav>
+
+    <h2>Оформление заявки на обучение</h2>
+    <p>Заполните форму для подачи заявки</p>
+
+    <form id="requestForm" onsubmit="requests.handleSubmit(event)">
+        <div>
+            <label for="req-transport">Вид транспорта *</label><br>
+            <select id="req-transport" name="transport">
+                <option value="">Выберите вид транспорта</option>
+                <option value="Автобус">Автобус</option>
+                <option value="Электробус">Электробус</option>
+                <option value="Трамвай">Трамвай</option>
+            </select>
+            <span id="req-transport-error" style="color:red"></span>
+        </div>
+        <div>
+            <label for="req-date">Желаемая дата начала обучения *</label><br>
+            <input type="text" id="req-date" name="startDate" placeholder="ДД.ММ.ГГГГ" maxlength="10">
+            <span id="req-date-error" style="color:red"></span>
+        </div>
+        <div>
+            <label for="req-payment">Способ оплаты *</label><br>
+            <select id="req-payment" name="payment">
+                <option value="">Выберите способ оплаты</option>
+                <option value="Предоплата по QR-коду">Предоплата по QR-коду</option>
+                <option value="Оплата картой МИР">Оплата картой МИР</option>
+                <option value="Постоплата в офисе">Постоплата в офисе организации</option>
+            </select>
+            <span id="req-payment-error" style="color:red"></span>
+        </div>
+        <div>
+            <label for="req-comment">Комментарий</label><br>
+            <textarea id="req-comment" name="comment" rows="3" placeholder="Дополнительная информация..."></textarea>
+        </div>
+        <button type="submit">Отправить заявку</button>
+    </form>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            storage.init();
+            const user = auth.getCurrentUser();
+            if (!user) {
+                alert('Требуется авторизация');
+                window.location.href = 'login.html';
+                return;
+            }
+            // Подставляем транспорт, если пришли с главной
+            const t = sessionStorage.getItem('selectedTransport');
+            if (t) {
+                document.getElementById('req-transport').value = t;
+                sessionStorage.removeItem('selectedTransport');
+            }
+        });
+    </script>
+</body>
+</html>
