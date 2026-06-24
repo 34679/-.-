@@ -2,41 +2,217 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Личный кабинет — Пассажирам.РФ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav>
-        <a href="index.html">Главная</a>
-        <a href="dashboard.html">Личный кабинет</a>
-        <a href="request.html">Подать заявку</a>
-        <a href="#" onclick="auth.logout()">Выход</a>
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="logo-img">
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Меню">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="login.html" class="nav-link">Вход</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="register.html" class="nav-link nav-link-primary">Регистрация</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="dashboard.html" class="nav-link">Личный кабинет</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="request.html" class="nav-link">Подать заявку</a>
+                </li>
+                <li class="nav-item admin-visible" style="display:none">
+                    <a href="admin.html" class="nav-link nav-link-admin">Админ-панель</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="#" class="nav-link" onclick="auth.logout()">Выход</a>
+                </li>
+            </ul>
+        </div>
     </nav>
 
-    <h2>Личный кабинет</h2>
-    <p>Добро пожаловать, <strong id="userName"></strong>!</p>
-    <p id="userEmail"></p>
+    <!-- Уведомления -->
+    <div class="notifications-container" id="notifications"></div>
 
-    <a href="request.html">+ Подать новую заявку</a>
+    <!-- ==================== ЛИЧНЫЙ КАБИНЕТ ==================== -->
+    <section class="page" id="page-dashboard">
+        <div class="dashboard">
+            <!-- Слайдер в личном кабинете -->
+            <div class="slider-section dashboard-slider">
+                <div class="slider" id="dashboardSlider">
+                    <div class="slider-container">
+                        <div class="slider-slide active">
+                            <img src="images/slider1.png" alt="Автобус">
+                            <div class="slide-caption">Современный автобус</div>
+                        </div>
+                        <div class="slider-slide">
+                            <img src="images/slider2.jpg" alt="Электробус">
+                            <div class="slide-caption">Экологичный электробус</div>
+                        </div>
+                        <div class="slider-slide">
+                            <img src="images/slider3.jpg" alt="Трамвай">
+                            <div class="slide-caption">Городской трамвай</div>
+                        </div>
+                        <div class="slider-slide">
+                            <img src="images/slider4.jpg" alt="Транспорт">
+                            <div class="slide-caption">Транспорт Москвы</div>
+                        </div>
+                    </div>
+                    <button class="slider-btn slider-prev" onclick="dashSlider.prev()">&#10094;</button>
+                    <button class="slider-btn slider-next" onclick="dashSlider.next()">&#10095;</button>
+                    <div class="slider-dots" id="dashboardSliderDots"></div>
+                </div>
+            </div>
 
-    <h3>Мои заявки</h3>
-    <div id="userRequests">
-        <p>У вас пока нет заявок</p>
+            <!-- Информация пользователя -->
+            <div class="user-info-card">
+                <h3>Добро пожаловать, <span id="userName">Пользователь</span>!</h3>
+                <p class="user-email" id="userEmail"></p>
+            </div>
+
+            <!-- Кнопка подачи заявки -->
+            <div class="dashboard-actions">
+                <a href="request.html" class="btn btn-primary btn-lg">
+                    <span class="btn-icon">+</span> Подать новую заявку
+                </a>
+            </div>
+
+            <!-- История заявок -->
+            <div class="requests-section">
+                <h2 class="section-title">Мои заявки</h2>
+                <div class="requests-list" id="userRequests">
+                    <div class="empty-state">
+                        <p>У вас пока нет заявок</p>
+                        <a href="request.html" class="btn btn-primary">Подать заявку</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== МОДАЛЬНОЕ ОКНО ОТЗЫВА ==================== -->
+    <div class="modal-overlay" id="reviewModal" style="display:none">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Оставить отзыв</h3>
+                <button class="modal-close" onclick="reviews.closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm" onsubmit="reviews.handleSubmit(event)">
+                    <input type="hidden" id="review-request-id">
+                    <div class="form-group">
+                        <label for="review-rating" class="form-label">Оценка</label>
+                        <div class="rating" id="ratingStars">
+                            <span class="star" data-value="1" onclick="reviews.setRating(1)">&#9733;</span>
+                            <span class="star" data-value="2" onclick="reviews.setRating(2)">&#9733;</span>
+                            <span class="star" data-value="3" onclick="reviews.setRating(3)">&#9733;</span>
+                            <span class="star" data-value="4" onclick="reviews.setRating(4)">&#9733;</span>
+                            <span class="star" data-value="5" onclick="reviews.setRating(5)">&#9733;</span>
+                        </div>
+                        <input type="hidden" id="review-rating" value="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="review-text" class="form-label">Ваш отзыв</label>
+                        <textarea id="review-text" class="form-textarea" rows="4" placeholder="Поделитесь впечатлениями об обучении..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Отправить отзыв</button>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <!-- ==================== МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ ==================== -->
+    <div class="modal-overlay" id="confirmModal" style="display:none">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h3 class="modal-title" id="confirmTitle">Подтверждение</h3>
+                <button class="modal-close" onclick="modal.close('confirmModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Вы уверены?</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="modal.close('confirmModal')">Отмена</button>
+                    <button class="btn btn-primary" id="confirmAction">Подтвердить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="footer-logo">
+                <p class="footer-desc">Курсы обучения водителей пассажирского транспорта</p>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>г. Москва, ул. Большая Ордынка, д. 15</p>
+                <p><a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Мы в соцсетях</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <img src="images/social.png" alt="Социальные сети" class="social-img">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Пассажирам.РФ — Все права защищены</p>
+        </div>
+    </footer>
 
     <script src="js/app.js"></script>
     <script>
+        let dashSlider;
+
         document.addEventListener('DOMContentLoaded', () => {
             storage.init();
+            notify.init();
+            nav.init();
+
+            // Защита страницы — только для авторизованных
             const user = auth.getCurrentUser();
             if (!user) {
-                alert('Требуется авторизация');
-                window.location.href = 'login.html';
+                notify.error('Требуется авторизация');
+                setTimeout(() => window.location.href = 'login.html', 500);
                 return;
             }
+
+            // Заполняем данные пользователя
             document.getElementById('userName').textContent = user.fio;
             document.getElementById('userEmail').textContent = user.email;
+
+            // Загружаем заявки
             dashboard.loadRequests();
+
+            // Слайдер
+            dashSlider = new Slider('dashboardSlider', 'dashboardSliderDots');
+
+            // Закрытие модалок по клику на оверлей
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) overlay.style.display = 'none';
+                });
+            });
         });
     </script>
 </body>

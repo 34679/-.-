@@ -2,67 +2,143 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Оформление заявки — Пассажирам.РФ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav>
-        <a href="index.html">Главная</a>
-        <a href="dashboard.html">Личный кабинет</a>
-        <a href="request.html">Подать заявку</a>
-        <a href="#" onclick="auth.logout()">Выход</a>
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="logo-img">
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Меню">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="login.html" class="nav-link">Вход</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="register.html" class="nav-link nav-link-primary">Регистрация</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="dashboard.html" class="nav-link">Личный кабинет</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="request.html" class="nav-link">Подать заявку</a>
+                </li>
+                <li class="nav-item admin-visible" style="display:none">
+                    <a href="admin.html" class="nav-link nav-link-admin">Админ-панель</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="#" class="nav-link" onclick="auth.logout()">Выход</a>
+                </li>
+            </ul>
+        </div>
     </nav>
 
-    <h2>Оформление заявки на обучение</h2>
-    <p>Заполните форму для подачи заявки</p>
+    <!-- Уведомления -->
+    <div class="notifications-container" id="notifications"></div>
 
-    <form id="requestForm" onsubmit="requests.handleSubmit(event)">
-        <div>
-            <label for="req-transport">Вид транспорта *</label><br>
-            <select id="req-transport" name="transport">
-                <option value="">Выберите вид транспорта</option>
-                <option value="Автобус">Автобус</option>
-                <option value="Электробус">Электробус</option>
-                <option value="Трамвай">Трамвай</option>
-            </select>
-            <span id="req-transport-error" style="color:red"></span>
+    <!-- ==================== СТРАНИЦА ЗАЯВКИ ==================== -->
+    <section class="page" id="page-new-request">
+        <div class="form-container">
+            <div class="form-card form-card-wide">
+                <h2 class="form-title">Оформление заявки на обучение</h2>
+                <p class="form-subtitle">Заполните форму для подачи заявки</p>
+                <form id="requestForm" onsubmit="requests.handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="req-transport" class="form-label">Вид транспорта *</label>
+                        <select id="req-transport" name="transport" class="form-select">
+                            <option value="">Выберите вид транспорта</option>
+                            <option value="Автобус">Автобус</option>
+                            <option value="Электробус">Электробус</option>
+                            <option value="Трамвай">Трамвай</option>
+                        </select>
+                        <span class="form-error" id="req-transport-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="req-date" class="form-label">Желаемая дата начала обучения *</label>
+                        <input type="text" id="req-date" name="startDate" class="form-input" placeholder="ДД.ММ.ГГГГ" maxlength="10">
+                        <span class="form-error" id="req-date-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="req-payment" class="form-label">Способ оплаты *</label>
+                        <select id="req-payment" name="payment" class="form-select">
+                            <option value="">Выберите способ оплаты</option>
+                            <option value="Предоплата по QR-коду">Предоплата по QR-коду</option>
+                            <option value="Оплата картой МИР">Оплата картой МИР</option>
+                            <option value="Постоплата в офисе">Постоплата в офисе организации</option>
+                        </select>
+                        <span class="form-error" id="req-payment-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="req-comment" class="form-label">Комментарий</label>
+                        <textarea id="req-comment" name="comment" class="form-textarea" rows="3" placeholder="Дополнительная информация..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Отправить заявку</button>
+                </form>
+            </div>
         </div>
-        <div>
-            <label for="req-date">Желаемая дата начала обучения *</label><br>
-            <input type="text" id="req-date" name="startDate" placeholder="ДД.ММ.ГГГГ" maxlength="10">
-            <span id="req-date-error" style="color:red"></span>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="footer-logo">
+                <p class="footer-desc">Курсы обучения водителей пассажирского транспорта</p>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>г. Москва, ул. Большая Ордынка, д. 15</p>
+                <p><a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Мы в соцсетях</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <img src="images/social.png" alt="Социальные сети" class="social-img">
+                    </a>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="req-payment">Способ оплаты *</label><br>
-            <select id="req-payment" name="payment">
-                <option value="">Выберите способ оплаты</option>
-                <option value="Предоплата по QR-коду">Предоплата по QR-коду</option>
-                <option value="Оплата картой МИР">Оплата картой МИР</option>
-                <option value="Постоплата в офисе">Постоплата в офисе организации</option>
-            </select>
-            <span id="req-payment-error" style="color:red"></span>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Пассажирам.РФ — Все права защищены</p>
         </div>
-        <div>
-            <label for="req-comment">Комментарий</label><br>
-            <textarea id="req-comment" name="comment" rows="3" placeholder="Дополнительная информация..."></textarea>
-        </div>
-        <button type="submit">Отправить заявку</button>
-    </form>
+    </footer>
 
     <script src="js/app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             storage.init();
+            notify.init();
+            nav.init();
+            masks.init();
+
+            // Защита страницы — только для авторизованных
             const user = auth.getCurrentUser();
             if (!user) {
-                alert('Требуется авторизация');
-                window.location.href = 'login.html';
+                notify.error('Требуется авторизация');
+                setTimeout(() => window.location.href = 'login.html', 500);
                 return;
             }
-            // Подставляем транспорт, если пришли с главной
-            const t = sessionStorage.getItem('selectedTransport');
-            if (t) {
-                document.getElementById('req-transport').value = t;
+
+            // Подставляем выбранный транспорт, если пришли с главной
+            const selectedTransport = sessionStorage.getItem('selectedTransport');
+            if (selectedTransport) {
+                const select = document.getElementById('req-transport');
+                if (select) select.value = selectedTransport;
                 sessionStorage.removeItem('selectedTransport');
             }
         });

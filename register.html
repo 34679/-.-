@@ -2,59 +2,136 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Регистрация — Пассажирам.РФ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav>
-        <a href="index.html">Главная</a>
-        <a href="login.html">Вход</a>
-        <a href="register.html">Регистрация</a>
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="logo-img">
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Меню">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="login.html" class="nav-link">Вход</a>
+                </li>
+                <li class="nav-item auth-hidden">
+                    <a href="register.html" class="nav-link nav-link-primary">Регистрация</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="dashboard.html" class="nav-link">Личный кабинет</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="request.html" class="nav-link">Подать заявку</a>
+                </li>
+                <li class="nav-item admin-visible" style="display:none">
+                    <a href="admin.html" class="nav-link nav-link-admin">Админ-панель</a>
+                </li>
+                <li class="nav-item auth-visible" style="display:none">
+                    <a href="#" class="nav-link" onclick="auth.logout()">Выход</a>
+                </li>
+            </ul>
+        </div>
     </nav>
 
-    <h2>Регистрация</h2>
-    <p>Создайте аккаунт для доступа к системе</p>
+    <!-- Уведомления -->
+    <div class="notifications-container" id="notifications"></div>
 
-    <form id="registerForm" onsubmit="auth.handleRegister(event)">
-        <div>
-            <label for="reg-login">Логин *</label><br>
-            <input type="text" id="reg-login" name="login" placeholder="Минимум 6 символов, латинские буквы и цифры">
-            <span id="reg-login-error" style="color:red"></span>
+    <!-- ==================== СТРАНИЦА РЕГИСТРАЦИИ ==================== -->
+    <section class="page" id="page-register">
+        <div class="form-container">
+            <div class="form-card">
+                <h2 class="form-title">Регистрация</h2>
+                <p class="form-subtitle">Создайте аккаунт для доступа к системе</p>
+                <form id="registerForm" onsubmit="auth.handleRegister(event)">
+                    <div class="form-group">
+                        <label for="reg-login" class="form-label">Логин *</label>
+                        <input type="text" id="reg-login" name="login" class="form-input" placeholder="Минимум 6 символов, латинские буквы и цифры">
+                        <span class="form-hint">Логин должен содержать минимум 6 символов (латинские буквы и цифры)</span>
+                        <span class="form-error" id="reg-login-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password" class="form-label">Пароль *</label>
+                        <input type="password" id="reg-password" name="password" class="form-input" placeholder="Минимум 8 символов">
+                        <span class="form-hint">Пароль должен содержать минимум 8 символов</span>
+                        <span class="form-error" id="reg-password-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-fio" class="form-label">ФИО *</label>
+                        <input type="text" id="reg-fio" name="fio" class="form-input" placeholder="Фамилия Имя Отчество">
+                        <span class="form-error" id="reg-fio-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-birthdate" class="form-label">Дата рождения *</label>
+                        <input type="text" id="reg-birthdate" name="birthdate" class="form-input" placeholder="ДД.ММ.ГГГГ" maxlength="10">
+                        <span class="form-error" id="reg-birthdate-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-phone" class="form-label">Контактный телефон *</label>
+                        <input type="tel" id="reg-phone" name="phone" class="form-input" placeholder="+7 (XXX) XXX-XX-XX">
+                        <span class="form-error" id="reg-phone-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email" class="form-label">E-mail *</label>
+                        <input type="email" id="reg-email" name="email" class="form-input" placeholder="example@mail.ru">
+                        <span class="form-error" id="reg-email-error"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Зарегистрироваться</button>
+                </form>
+                <div class="form-footer">
+                    <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="reg-password">Пароль *</label><br>
-            <input type="password" id="reg-password" name="password" placeholder="Минимум 8 символов">
-            <span id="reg-password-error" style="color:red"></span>
-        </div>
-        <div>
-            <label for="reg-fio">ФИО *</label><br>
-            <input type="text" id="reg-fio" name="fio" placeholder="Фамилия Имя Отчество">
-            <span id="reg-fio-error" style="color:red"></span>
-        </div>
-        <div>
-            <label for="reg-birthdate">Дата рождения *</label><br>
-            <input type="text" id="reg-birthdate" name="birthdate" placeholder="ДД.ММ.ГГГГ" maxlength="10">
-            <span id="reg-birthdate-error" style="color:red"></span>
-        </div>
-        <div>
-            <label for="reg-phone">Контактный телефон *</label><br>
-            <input type="tel" id="reg-phone" name="phone" placeholder="+7 (XXX) XXX-XX-XX">
-            <span id="reg-phone-error" style="color:red"></span>
-        </div>
-        <div>
-            <label for="reg-email">E-mail *</label><br>
-            <input type="email" id="reg-email" name="email" placeholder="example@mail.ru">
-            <span id="reg-email-error" style="color:red"></span>
-        </div>
-        <button type="submit">Зарегистрироваться</button>
-    </form>
+    </section>
 
-    <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+    <!-- Футер -->
+    <footer class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/logo.svg" alt="Пассажирам.РФ" class="footer-logo">
+                <p class="footer-desc">Курсы обучения водителей пассажирского транспорта</p>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>г. Москва, ул. Большая Ордынка, д. 15</p>
+                <p><a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Мы в соцсетях</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <img src="images/social.png" alt="Социальные сети" class="social-img">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Пассажирам.РФ — Все права защищены</p>
+        </div>
+    </footer>
 
     <script src="js/app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             storage.init();
+            notify.init();
+            nav.init();
+            masks.init();
+            // Если уже залогинен — редиректим
             if (auth.getCurrentUser()) {
                 window.location.href = auth.isAdmin() ? 'admin.html' : 'dashboard.html';
             }
