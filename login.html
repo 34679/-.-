@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход — Пассажирам.РФ</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="login.html">Вход</a>
+        <a href="register.html">Регистрация</a>
+    </nav>
+
+    <h2>Вход в систему</h2>
+    <p>Войдите в свой аккаунт</p>
+
+    <form id="loginForm" onsubmit="auth.handleLogin(event)">
+        <div>
+            <label for="login-login">Логин</label><br>
+            <input type="text" id="login-login" name="login" placeholder="Введите логин">
+            <span id="login-login-error" style="color:red"></span>
+        </div>
+        <div>
+            <label for="login-password">Пароль</label><br>
+            <input type="password" id="login-password" name="password" placeholder="Введите пароль">
+            <span id="login-password-error" style="color:red"></span>
+        </div>
+        <button type="submit">Войти</button>
+    </form>
+
+    <p>Еще не зарегистрированы? <a href="register.html">Регистрация</a></p>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            storage.init();
+            if (auth.getCurrentUser()) {
+                window.location.href = auth.isAdmin() ? 'admin.html' : 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

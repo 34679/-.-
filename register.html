@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация — Пассажирам.РФ</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="login.html">Вход</a>
+        <a href="register.html">Регистрация</a>
+    </nav>
+
+    <h2>Регистрация</h2>
+    <p>Создайте аккаунт для доступа к системе</p>
+
+    <form id="registerForm" onsubmit="auth.handleRegister(event)">
+        <div>
+            <label for="reg-login">Логин *</label><br>
+            <input type="text" id="reg-login" name="login" placeholder="Минимум 6 символов, латинские буквы и цифры">
+            <span id="reg-login-error" style="color:red"></span>
+        </div>
+        <div>
+            <label for="reg-password">Пароль *</label><br>
+            <input type="password" id="reg-password" name="password" placeholder="Минимум 8 символов">
+            <span id="reg-password-error" style="color:red"></span>
+        </div>
+        <div>
+            <label for="reg-fio">ФИО *</label><br>
+            <input type="text" id="reg-fio" name="fio" placeholder="Фамилия Имя Отчество">
+            <span id="reg-fio-error" style="color:red"></span>
+        </div>
+        <div>
+            <label for="reg-birthdate">Дата рождения *</label><br>
+            <input type="text" id="reg-birthdate" name="birthdate" placeholder="ДД.ММ.ГГГГ" maxlength="10">
+            <span id="reg-birthdate-error" style="color:red"></span>
+        </div>
+        <div>
+            <label for="reg-phone">Контактный телефон *</label><br>
+            <input type="tel" id="reg-phone" name="phone" placeholder="+7 (XXX) XXX-XX-XX">
+            <span id="reg-phone-error" style="color:red"></span>
+        </div>
+        <div>
+            <label for="reg-email">E-mail *</label><br>
+            <input type="email" id="reg-email" name="email" placeholder="example@mail.ru">
+            <span id="reg-email-error" style="color:red"></span>
+        </div>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+
+    <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            storage.init();
+            if (auth.getCurrentUser()) {
+                window.location.href = auth.isAdmin() ? 'admin.html' : 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
